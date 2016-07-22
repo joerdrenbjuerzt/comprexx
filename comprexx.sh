@@ -1,7 +1,7 @@
 #!/bin/bash
 # comprexx.sh v 0.1
 # Author: mzt 2016-07-21 ( madztyles @ gmail dot com )
-# TODO: ogg_enc & quality switches & wav & ...
+# TODO: quality switches & ... & ... & ...
 # If used wrongly, this script could destroy substantial parts
 # of the universe, so be aware of that and caution please.
 
@@ -34,7 +34,12 @@ path [default $PWD]: " worx
 		[[ -z $worx ]] && worx=${worx:-$PWD}
 	done
 
-	# lame or ogg, that is the question (no ogg implementation yet)
+	# search for flac or wav files?
+	while [[ $seek != "flac" && $seek != "wav" ]]; do
+		read -rp "convert wav or flac files? [wav, flac]: " seek
+	done
+
+	# lame or ogg, that is the question
 	while [[ $codec != "ogg" && $codec != "lame" ]]; do
 		read -rp "ogg or lame codec: " codec
 	done
@@ -74,7 +79,7 @@ init()
 
 	if [[ ! -f $index ]]; then
 		printf "searching through files now, this could take a while.\n"
-		find . -name '*.flac' > $index
+		eval find . -name '*.$seek' > $index
 		OLD_IFS=$IFS
 		while IFS='' read -r init || [[ -n "$init" ]]; do
 			file[i]=$init
@@ -117,6 +122,14 @@ lame_enc()
 		cut -d ':' -f 1 --complement | sed 's/^[ \t]*//')" \
 	"${cur_file}"  "${cur_file%.*}.mp3"
   }
+
+ogg_enc()
+  {
+	oggenc -Q -b 350 -q 10 -c INFO="encoded with comprexx.sh by mzt on $(date +%Y-%m-%d)" \
+		"${cur_file}"
+  }
+
+
 
 trash()
   {
