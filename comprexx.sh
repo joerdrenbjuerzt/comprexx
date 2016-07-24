@@ -75,7 +75,7 @@ path [default $PWD]: " worx
 # if index already present, continue that?
 init()
   {
-	index="./files.data"
+	index="${worx}/files.data"
 
 	if [[ ! -f $index ]]; then
 		printf "searching through files now, this could take a while.\n"
