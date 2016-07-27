@@ -91,7 +91,7 @@ init()
 		while [[ $cont != "y" && $cont != "n" ]]; do
 			read -rp "continue to work on that index? [y, n]: " cont
 		done
-		[[ $cont = "n" ]] && ( printf "exiting comprexx.sh\n" && exit $E_USER_BREAK )
+		[[ $cont = "n" ]] && printf "exiting comprexx.sh\n" && exit $E_USER_BREAK
 		[[ $cont = "y" ]] &&  while IFS='' read -r init || [[ -n "$init" ]]; do
 			file[i]=$init
 			((i++))
